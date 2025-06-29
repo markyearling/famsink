@@ -1,0 +1,10 @@
+{
+  "name": "FamSync",
+  "slug": "famsync",
+  "extra": {
+    "eas": {
+      "projectId": "cb79c585-6f04-4217-b44c-1c24e4beb79c"
+    }
+  },
+  "owner": "markyearling"
+}
