@@ -37,7 +37,7 @@ const SignUp: React.FC = () => {
             supabaseClient={supabase}
             appearance={{ theme: ThemeSupa }}
             providers={[]}
-            redirectTo={`https://qnkan4e0w69at1k.boltexpo.dev/auth/callback`}
+            redirectTo={`${window.location.origin}/auth/callback`}
             view="sign_up"
           />
         </div>
