@@ -2612,6 +2612,11 @@
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.15.tgz"
   integrity sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==
 
+"@types/luxon@^3.4.2":
+  version "3.6.2"
+  resolved "https://registry.npmjs.org/@types/luxon/-/luxon-3.6.2.tgz"
+  integrity sha512-R/BdP7OxEMc44l2Ex5lSXHoIXTB2JLNa3y2QISIbr58U/YcsffyQrYW//hZSdrfxrjRZj3GcUoxMPGdO8gSYuw==
+
 "@types/node@*":
   version "24.0.7"
   resolved "https://registry.npmjs.org/@types/node/-/node-24.0.7.tgz"
@@ -5707,6 +5712,11 @@ lucide-react-native@^0.359.0:
   version "0.359.0"
   resolved "https://registry.npmjs.org/lucide-react-native/-/lucide-react-native-0.359.0.tgz"
   integrity sha512-KKrDeg1YoIybM9O9kakrNtJEDzw1mGijqBlBokJrbr40URkDAbCC+a/Lo6WIFDNbobtvje+jV4xv8J3AoohY9A==
+
+luxon@^3.4.4:
+  version "3.6.1"
+  resolved "https://registry.npmjs.org/luxon/-/luxon-3.6.1.tgz"
+  integrity sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==
 
 make-dir@^2.0.0, make-dir@^2.1.0:
   version "2.1.0"

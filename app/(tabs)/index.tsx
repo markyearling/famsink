@@ -1,114 +1,324 @@
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { ChevronRight, Bell, Search } from 'lucide-react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useEffect } from 'react';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  ScrollView, 
+  TouchableOpacity, 
+  SafeAreaView,
+  ActivityIndicator
+} from 'react-native';
+import { useRouter } from 'expo-router';
+import { 
+  Calendar as CalendarIcon, 
+  Users, 
+  Clock, 
+  ArrowRight,
+  Bell
+} from 'lucide-react-native';
+import EventCard from '../components/events/EventCard';
+import ChildActivitySummary from '../components/dashboard/ChildActivitySummary';
+import ConnectedPlatform from '../components/dashboard/ConnectedPlatform';
+import { Child, Platform, Event } from '../types';
 
-export default function HomeScreen() {
-  const featuredItems = [
+export default function Dashboard() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [userTimezone, setUserTimezone] = useState<string>('UTC');
+  
+  // Mock data for demonstration
+  const [user] = useState({
+    name: 'John Smith',
+    email: 'john.smith@example.com',
+  });
+
+  const [childrenData] = useState<Child[]>([
     {
       id: '1',
-      title: 'Summer Collection',
-      description: 'Discover our latest summer styles',
-      image: 'https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg?auto=compress&cs=tinysrgb&w=800'
+      name: 'Emma',
+      age: 10,
+      color: '#3B82F6', // Blue
+      sports: [
+        { name: 'Soccer', color: '#10B981' }, // Green
+        { name: 'Swimming', color: '#3B82F6' }, // Blue
+      ],
+      eventCount: 5,
     },
     {
       id: '2',
-      title: 'New Arrivals',
-      description: 'Check out what just landed',
-      image: 'https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=800'
+      name: 'Jack',
+      age: 8,
+      color: '#EF4444', // Red
+      sports: [
+        { name: 'Baseball', color: '#F59E0B' }, // Yellow
+        { name: 'Basketball', color: '#EF4444' }, // Red
+      ],
+      eventCount: 3,
     },
     {
       id: '3',
-      title: 'Trending Now',
-      description: 'See what everyone is wearing',
-      image: 'https://images.pexels.com/photos/2584269/pexels-photo-2584269.jpeg?auto=compress&cs=tinysrgb&w=800'
-    }
-  ];
+      name: 'Sophia',
+      age: 12,
+      color: '#8B5CF6', // Purple
+      sports: [
+        { name: 'Volleyball', color: '#EC4899' }, // Pink
+        { name: 'Tennis', color: '#8B5CF6' }, // Purple
+      ],
+      eventCount: 4,
+    },
+  ]);
 
-  const categories = [
-    { id: '1', name: 'Women', count: 152 },
-    { id: '2', name: 'Men', count: 142 },
-    { id: '3', name: 'Kids', count: 92 },
-    { id: '4', name: 'Accessories', count: 56 },
-  ];
+  const [platformsData] = useState<Platform[]>([
+    {
+      id: 1,
+      name: 'SportsEngine',
+      icon: CalendarIcon,
+      color: '#2563EB', // Blue
+      connected: true,
+      hasIssue: false,
+    },
+    {
+      id: 2,
+      name: 'TeamSnap',
+      icon: Users,
+      color: '#7C3AED', // Purple
+      connected: true,
+      hasIssue: false,
+    },
+    {
+      id: 3,
+      name: 'PlayMetrics',
+      icon: CalendarIcon,
+      color: '#10B981', // Green
+      connected: false,
+      hasIssue: false,
+    },
+    {
+      id: 4,
+      name: 'GameChanger',
+      icon: CalendarIcon,
+      color: '#F97316', // Orange
+      connected: true,
+      hasIssue: true,
+    },
+  ]);
+
+  // Generate mock events
+  const generateEvents = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    
+    const events: Event[] = [];
+    
+    // Create events for each child
+    childrenData.forEach(child => {
+      child.sports.forEach(sport => {
+        // Generate some events for the current month
+        for (let i = 1; i <= 28; i++) {
+          // Only create events on certain days to avoid too many
+          if (i % 3 === 0 || i % 5 === 0) {
+            const isGame = i % 3 === 0;
+            const startTime = new Date(year, month, i, 16 + (i % 4), 0);
+            const endTime = new Date(startTime);
+            endTime.setHours(endTime.getHours() + (isGame ? 2 : 1.5));
+            
+            const platform = platformsData[Math.floor(Math.random() * platformsData.length)];
+            
+            events.push({
+              id: events.length + 1,
+              title: `${sport.name} ${isGame ? 'Game' : 'Practice'}`,
+              description: isGame 
+                ? `${child.name}'s ${sport.name} game against ${['Tigers', 'Eagles', 'Warriors', 'Sharks'][i % 4]}`
+                : `Regular ${sport.name} practice session`,
+              startTime,
+              endTime,
+              location: isGame 
+                ? `${['City Park', 'Memorial Field', 'Community Center', 'Sports Complex'][i % 4]}`
+                : `Training Center`,
+              sport: sport.name,
+              color: sport.color,
+              child,
+              platform: platform.name,
+              platformColor: platform.color,
+              platformIcon: platform.icon,
+              isToday: startTime.getDate() === now.getDate(),
+            });
+          }
+        }
+      });
+    });
+    
+    return events;
+  };
+
+  const [events] = useState<Event[]>(generateEvents());
+  
+  // Upcoming events (today and future)
+  const upcomingEvents = events
+    .filter(event => event.startTime >= new Date())
+    .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
+
+  // Handle platform management
+  const handleManagePlatform = (platformName: string) => {
+    // In a real app, this would navigate to the platform management screen
+    console.log(`Managing platform: ${platformName}`);
+  };
+
+  useEffect(() => {
+    // Simulate loading data
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#3b82f6" />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.greeting}>Good morning,</Text>
-          <Text style={styles.username}>Jessica</Text>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Dashboard</Text>
+          <Text style={styles.date}>
+            {new Date().toLocaleDateString('en-US', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </Text>
         </View>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Search size={24} color="#1f2937" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Bell size={24} color="#1f2937" />
-          </TouchableOpacity>
-        </View>
-      </View>
 
-      <ScrollView 
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        <View style={styles.featuredSection}>
+        {/* Today's Schedule */}
+        <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Featured</Text>
-            <TouchableOpacity style={styles.seeAllButton}>
-              <Text style={styles.seeAllText}>See All</Text>
-              <ChevronRight size={16} color="#3b82f6" />
-            </TouchableOpacity>
+            <View style={styles.sectionTitleContainer}>
+              <CalendarIcon size={20} color="#ffffff" style={styles.sectionIcon} />
+              <Text style={styles.sectionTitle}>Today's Schedule</Text>
+            </View>
+            <Text style={styles.sectionCount}>
+              {upcomingEvents.filter(e => e.isToday).length} Events
+            </Text>
           </View>
-
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.featuredList}
-          >
-            {featuredItems.map(item => (
-              <TouchableOpacity key={item.id} style={styles.featuredItem}>
-                <Image 
-                  source={{ uri: item.image }}
-                  style={styles.featuredImage}
-                />
-                <View style={styles.featuredContent}>
-                  <Text style={styles.featuredTitle}>{item.title}</Text>
-                  <Text style={styles.featuredDescription}>{item.description}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-
-        <View style={styles.categoriesSection}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Categories</Text>
-            <TouchableOpacity style={styles.seeAllButton}>
-              <Text style={styles.seeAllText}>See All</Text>
-              <ChevronRight size={16} color="#3b82f6" />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.categoriesGrid}>
-            {categories.map(category => (
-              <TouchableOpacity key={category.id} style={styles.categoryItem}>
-                <Text style={styles.categoryName}>{category.name}</Text>
-                <Text style={styles.categoryCount}>{category.count} items</Text>
-              </TouchableOpacity>
-            ))}
+          <View style={styles.sectionContent}>
+            {upcomingEvents.filter(e => e.isToday).length > 0 ? (
+              upcomingEvents
+                .filter(e => e.isToday)
+                .map(event => (
+                  <EventCard 
+                    key={`today-${event.id}`} 
+                    event={event} 
+                    userTimezone={userTimezone}
+                  />
+                ))
+            ) : (
+              <View style={styles.emptyState}>
+                <Clock size={48} color="#d1d5db" />
+                <Text style={styles.emptyStateTitle}>No events scheduled for today</Text>
+                <Text style={styles.emptyStateSubtitle}>Enjoy your free time!</Text>
+              </View>
+            )}
           </View>
         </View>
 
-        <View style={styles.promotionSection}>
-          <View style={styles.promotion}>
-            <View style={styles.promotionContent}>
-              <Text style={styles.promotionTitle}>Summer Sale</Text>
-              <Text style={styles.promotionDescription}>Get up to 50% off on selected items</Text>
-              <TouchableOpacity style={styles.promotionButton}>
-                <Text style={styles.promotionButtonText}>Shop Now</Text>
+        {/* Children Activity & Connected Platforms */}
+        <View style={styles.twoColumnLayout}>
+          {/* Children Activity Section */}
+          <View style={styles.card}>
+            <View style={styles.cardHeader}>
+              <View style={styles.cardTitleContainer}>
+                <Users size={20} color="#6b7280" style={styles.cardIcon} />
+                <Text style={styles.cardTitle}>Children's Activities</Text>
+              </View>
+              <TouchableOpacity 
+                style={styles.viewAllButton}
+                onPress={() => router.push('/profiles')}
+              >
+                <Text style={styles.viewAllText}>View all</Text>
+                <ArrowRight size={16} color="#3b82f6" />
               </TouchableOpacity>
             </View>
+            <View style={styles.cardContent}>
+              {childrenData.map(child => (
+                <ChildActivitySummary key={child.id} child={child} />
+              ))}
+            </View>
+          </View>
+
+          {/* Connected Platforms */}
+          <View style={styles.card}>
+            <View style={styles.cardHeader}>
+              <View style={styles.cardTitleContainer}>
+                <CalendarIcon size={20} color="#6b7280" style={styles.cardIcon} />
+                <Text style={styles.cardTitle}>Connected Platforms</Text>
+              </View>
+              <TouchableOpacity 
+                style={styles.viewAllButton}
+                onPress={() => router.push('/connections')}
+              >
+                <Text style={styles.viewAllText}>Manage</Text>
+                <ArrowRight size={16} color="#3b82f6" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.cardContent}>
+              {platformsData.filter(p => p.connected).map(platform => (
+                <ConnectedPlatform 
+                  key={platform.id} 
+                  platform={platform} 
+                  onManage={() => handleManagePlatform(platform.name)}
+                />
+              ))}
+              {platformsData.filter(p => p.connected).length === 0 && (
+                <View style={styles.emptyPlatforms}>
+                  <Text style={styles.emptyPlatformsText}>
+                    No platforms connected yet. Visit the Connections page to connect your sports platforms.
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+        </View>
+
+        {/* Upcoming Events */}
+        <View style={styles.section}>
+          <View style={styles.cardHeader}>
+            <View style={styles.cardTitleContainer}>
+              <CalendarIcon size={20} color="#6b7280" style={styles.cardIcon} />
+              <Text style={styles.cardTitle}>Upcoming Events</Text>
+            </View>
+            <TouchableOpacity 
+              style={styles.viewAllButton}
+              onPress={() => router.push('/calendar')}
+            >
+              <Text style={styles.viewAllText}>View calendar</Text>
+              <ArrowRight size={16} color="#3b82f6" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.upcomingEventsContainer}>
+            {upcomingEvents
+              .filter(e => !e.isToday)
+              .slice(0, 5)
+              .map(event => (
+                <EventCard 
+                  key={`upcoming-${event.id}`} 
+                  event={event}
+                  userTimezone={userTimezone}
+                />
+              ))}
+            {upcomingEvents.filter(e => !e.isToday).length === 0 && (
+              <View style={styles.emptyState}>
+                <CalendarIcon size={48} color="#d1d5db" />
+                <Text style={styles.emptyStateTitle}>No upcoming events scheduled</Text>
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>
@@ -121,166 +331,149 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f9fafb',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 15,
-  },
-  greeting: {
-    fontFamily: 'Inter-Regular',
-    fontSize: 14,
-    color: '#6b7280',
-  },
-  username: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 20,
-    color: '#1f2937',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-  },
-  iconButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f3f4f6',
+  loadingContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 10,
+    backgroundColor: '#f9fafb',
   },
-  scrollContent: {
-    paddingBottom: 30,
+  scrollView: {
+    flex: 1,
+    padding: 16,
   },
-  featuredSection: {
-    marginTop: 10,
-    paddingHorizontal: 20,
+  header: {
+    marginBottom: 24,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    marginBottom: 4,
+    fontFamily: 'Inter-Bold',
+  },
+  date: {
+    fontSize: 14,
+    color: '#6b7280',
+    fontFamily: 'Inter-Regular',
+  },
+  section: {
+    marginBottom: 24,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: 'rgba(59, 130, 246, 1)', // Blue gradient start
   },
-  sectionTitle: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 18,
-    color: '#1f2937',
-  },
-  seeAllButton: {
+  sectionTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  seeAllText: {
+  sectionIcon: {
+    marginRight: 8,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#ffffff',
+    fontFamily: 'Inter-SemiBold',
+  },
+  sectionCount: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#ffffff',
     fontFamily: 'Inter-Medium',
+  },
+  sectionContent: {
+    // Content will be filled by EventCard components
+  },
+  twoColumnLayout: {
+    flexDirection: 'column',
+    marginBottom: 24,
+    gap: 16,
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e7eb',
+  },
+  cardTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cardIcon: {
+    marginRight: 8,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1f2937',
+    fontFamily: 'Inter-SemiBold',
+  },
+  viewAllButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  viewAllText: {
     fontSize: 14,
     color: '#3b82f6',
     marginRight: 4,
+    fontFamily: 'Inter-Medium',
   },
-  featuredList: {
-    paddingRight: 20,
-  },
-  featuredItem: {
-    width: 280,
-    height: 180,
-    borderRadius: 12,
-    marginRight: 15,
-    overflow: 'hidden',
-  },
-  featuredImage: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-  },
-  featuredContent: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.3)',
+  cardContent: {
     padding: 16,
-    justifyContent: 'flex-end',
   },
-  featuredTitle: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 18,
-    color: '#ffffff',
-    marginBottom: 4,
-  },
-  featuredDescription: {
-    fontFamily: 'Inter-Regular',
-    fontSize: 14,
-    color: '#f3f4f6',
-  },
-  categoriesSection: {
-    marginTop: 30,
-    paddingHorizontal: 20,
-  },
-  categoriesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  categoryItem: {
-    width: '48%',
-    height: 100,
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 15,
+  emptyState: {
+    alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
-    elevation: 2,
+    padding: 24,
   },
-  categoryName: {
-    fontFamily: 'Poppins-SemiBold',
+  emptyStateTitle: {
     fontSize: 16,
+    fontWeight: '500',
     color: '#1f2937',
-    marginBottom: 4,
+    marginTop: 12,
+    fontFamily: 'Inter-Medium',
   },
-  categoryCount: {
-    fontFamily: 'Inter-Regular',
+  emptyStateSubtitle: {
     fontSize: 14,
     color: '#6b7280',
-  },
-  promotionSection: {
-    marginTop: 15,
-    paddingHorizontal: 20,
-  },
-  promotion: {
-    height: 150,
-    borderRadius: 12,
-    backgroundColor: '#3b82f6',
-    padding: 20,
-    justifyContent: 'center',
-  },
-  promotionContent: {
-    maxWidth: '70%',
-  },
-  promotionTitle: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 22,
-    color: '#ffffff',
-    marginBottom: 8,
-  },
-  promotionDescription: {
+    marginTop: 4,
     fontFamily: 'Inter-Regular',
-    fontSize: 14,
-    color: '#e0e7ff',
-    marginBottom: 16,
   },
-  promotionButton: {
-    backgroundColor: '#ffffff',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    alignSelf: 'flex-start',
+  emptyPlatforms: {
+    padding: 16,
   },
-  promotionButtonText: {
-    fontFamily: 'Inter-Medium',
+  emptyPlatformsText: {
     fontSize: 14,
-    color: '#3b82f6',
+    color: '#6b7280',
+    textAlign: 'center',
+    fontFamily: 'Inter-Regular',
+  },
+  upcomingEventsContainer: {
+    // Content will be filled by EventCard components
   },
 });

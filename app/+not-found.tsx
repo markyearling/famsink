@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
-import { TriangleAlert } from 'lucide-react-native';
+import { AlertTriangle } from 'lucide-react-native';
 
 export default function NotFoundScreen() {
   return (
     <View style={styles.container}>
-      <TriangleAlert size={60} color="#ef4444" style={styles.icon} />
+      <AlertTriangle size={60} color="#ef4444" style={styles.icon} />
       <Text style={styles.title}>Page Not Found</Text>
       <Text style={styles.message}>The page you're looking for doesn't exist or has been moved.</Text>
       <Link href="/" asChild>
