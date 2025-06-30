@@ -115,7 +115,10 @@ const AppContent = () => {
       }
     };
 
-    initializeConnection();
+    initializeConnection().catch((err) => {
+      console.error('Failed to initialize connection:', err);
+      setError(err instanceof Error ? err.message : 'Failed to initialize application');
+    });
   }, []);
 
   // Check for password reset tokens in URL
