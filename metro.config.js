@@ -15,4 +15,10 @@ config.transformer.getTransformOptions = async () => ({
   },
 });
 
+// Remove the watcher options that were causing validation warnings
+// config.watcher = {
+//   usePolling: true,
+//   interval: 1000,
+// };
+
 module.exports = config;
