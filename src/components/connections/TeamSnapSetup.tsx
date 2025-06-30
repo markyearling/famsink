@@ -14,7 +14,7 @@ const TeamSnapSetup: React.FC = () => {
     const fetchData = async () => {
       try {
         const teamSnap = new TeamSnapService({
-          clientId: process.env.VITE_TEAMSNAP_CLIENT_ID || '',
+          clientId: process.env.EXPO_PUBLIC_TEAMSNAP_CLIENT_ID || '',
           redirectUri: `${window.location.origin}/connections/teamsnap/callback`
         });
 
