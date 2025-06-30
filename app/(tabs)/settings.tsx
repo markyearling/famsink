@@ -10,25 +10,7 @@ import {
   ActivityIndicator,
   Platform
 } from 'react-native';
-import { 
-  Bell, 
-  Globe, 
-  Lock, 
-  Mail, 
-  Moon, 
-  Sun, 
-  User, 
-  Phone, 
-  Calendar, 
-  Plus, 
-  Trash2, 
-  Save, 
-  Clock, 
-  Eye, 
-  EyeOff, 
-  CheckCircle, 
-  AlertCircle 
-} from 'lucide-react-native';
+import { Bell, Globe, Lock, Mail, Moon, Sun, User, Phone, Calendar, Plus, Trash2, Save, Clock, Eye, EyeOff, CircleCheck as CheckCircle, CircleAlert as AlertCircle } from 'lucide-react-native';
 
 export default function SettingsScreen() {
   const [loading, setLoading] = useState(true);

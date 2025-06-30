@@ -8,22 +8,7 @@ import {
   TextInput,
   ActivityIndicator
 } from 'react-native';
-import { 
-  Users, 
-  UserPlus, 
-  Search, 
-  Mail, 
-  Clock, 
-  Check, 
-  X, 
-  Trash2, 
-  Shield, 
-  Eye, 
-  MessageCircle, 
-  Edit2, 
-  Save, 
-  AlertCircle 
-} from 'lucide-react-native';
+import { Users, UserPlus, Search, Mail, Clock, Check, X, Trash2, Shield, Eye, MessageCircle, CreditCard as Edit2, Save, CircleAlert as AlertCircle } from 'lucide-react-native';
 
 export default function FriendsScreen() {
   const [loading, setLoading] = useState(true);

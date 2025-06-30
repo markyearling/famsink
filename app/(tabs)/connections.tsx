@@ -8,16 +8,7 @@ import {
   ActivityIndicator,
   Image
 } from 'react-native';
-import { 
-  Calendar, 
-  Users, 
-  BarChart, 
-  Link as LinkIcon, 
-  ExternalLink, 
-  CheckCircle, 
-  AlertTriangle, 
-  RefreshCw 
-} from 'lucide-react-native';
+import { Calendar, Users, BarChart, Link as LinkIcon, ExternalLink, CircleCheck as CheckCircle, TriangleAlert as AlertTriangle, RefreshCw } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 
 export default function ConnectionsScreen() {
