@@ -66,7 +66,9 @@ export const useCapacitor = () => {
       }
     };
 
-    initializeCapacitor();
+    initializeCapacitor().catch((error) => {
+      console.error('Failed to initialize Capacitor:', error);
+    });
 
     return () => {
       if (isNative) {
