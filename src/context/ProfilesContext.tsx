@@ -91,7 +91,14 @@ export const ProfilesProvider: React.FC<ProfilesProviderProps> = ({ children }) 
       }
     };
 
-    initializeConnection();
+    initializeConnection().catch((err) => {
+      if (mounted) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to initialize connection';
+        setError(errorMessage);
+        console.error('Unhandled connection initialization error:', err);
+        setLoading(false);
+      }
+    });
 
     return () => {
       mounted = false;
