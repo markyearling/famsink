@@ -1,10 +1,22 @@
 {
-  "name": "FamSync",
-  "slug": "famsync",
-  "extra": {
-    "eas": {
-      "projectId": "cb79c585-6f04-4217-b44c-1c24e4beb79c"
+  "expo": {
+    "name": "FamSink",
+    "slug": "famsink",
+    "extra": {
+      "eas": {
+        "projectId": "e94ab2aa-5019-4ff6-b7ba-99fc0bd04e0e"
+      }
+    },
+    "owner": "markyearling",
+    "ios": {
+      "bundleIdentifier": "com.yearling.famsink",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "We use the photo library to let you upload and select photos."
+      }
+    },
+    "android": {
+      "package": "com.yearling.famsink"
     }
-  },
-  "owner": "markyearling"
+  }
 }

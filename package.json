@@ -13,7 +13,10 @@
     "cap:android": "npm run cap:build && npx cap open android",
     "cap:sync": "npx cap sync",
     "cap:serve": "npm run build && npx cap run ios --livereload --external",
-    "cap:serve:android": "npm run build && npx cap run android --livereload --external"
+    "cap:serve:android": "npm run build && npx cap run android --livereload --external",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@capacitor/app": "^5.0.6",
@@ -31,6 +34,7 @@
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.39.0",
     "expo": "^53.0.13",
+    "expo-status-bar": "~2.2.3",
     "ical.js": "^1.5.0",
     "lucide-react": "^0.292.0",
     "luxon": "^3.4.4",
@@ -38,9 +42,11 @@
     "query-string": "^8.1.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-native": "0.79.4",
     "react-router-dom": "^6.20.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.0",
     "@capacitor/android": "^5.7.8",
     "@capacitor/cli": "^5.5.1",
     "@types/luxon": "^3.4.2",
