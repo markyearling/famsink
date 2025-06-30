@@ -253,4 +253,8 @@ export default function App() {
       </div>
     </ErrorBoundary>
   );
+} catch (err) {
+    console.error("🔥 App() component threw:", err);
+    return <p style={{ color: 'red' }}>Top-level App() error: {String(err)}</p>;
+  }
 }
