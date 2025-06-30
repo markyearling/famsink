@@ -23,12 +23,25 @@ const Dashboard: React.FC = () => {
   const [connectedPlatforms, setConnectedPlatforms] = useState<Platform[]>([]);
   const [userTimezone, setUserTimezone] = useState<string>('UTC');
 
+  // Log Google Maps API key and Map ID
+  console.log('🔍 Dashboard: Google Maps ENV:', {
+    API_KEY: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY ? 'present' : 'missing',
+    MAP_ID: process.env.EXPO_PUBLIC_GOOGLE_MAPS_MAP_ID ? 'present' : 'missing'
+  });
+
   // Centralized Google Maps loading
   const { isLoaded: mapsLoaded, loadError: mapsLoadError } = useLoadScript({
     googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || '',
     libraries,
     mapIds: [process.env.EXPO_PUBLIC_GOOGLE_MAPS_MAP_ID || '']
   });
+
+  // Log any Maps loading errors
+  useEffect(() => {
+    if (mapsLoadError) {
+      console.error('🔴 Dashboard: Google Maps loading error:', mapsLoadError);
+    }
+  }, [mapsLoadError]);
 
   // Memoize profile IDs to prevent unnecessary re-renders
   const profileIds = useMemo(() => profiles.map(p => p.id), [profiles]);

@@ -26,6 +26,11 @@ const EventModal: React.FC<EventModalProps> = ({ event, onClose, mapsLoaded, map
   const [canEdit, setCanEdit] = useState(false);
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
+  // Log Google Maps Map ID
+  console.log('🔍 EventModal: Google Maps ENV:', {
+    MAP_ID: process.env.EXPO_PUBLIC_GOOGLE_MAPS_MAP_ID ? 'present' : 'missing'
+  });
+
   // Check if user can edit this event
   useEffect(() => {
     const checkEditPermissions = async () => {
