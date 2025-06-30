@@ -18,7 +18,7 @@ const ForgotPassword: React.FC = () => {
 
     try {
       // Use the auth/callback endpoint for the redirect URL
-      const redirectUrl = `${window.location.origin}/auth/callback`;
+      const redirectUrl = `https://qnkan4e0w69at1k.boltexpo.dev/auth/callback`;
       
       console.log('ForgotPassword: Sending reset password email with redirectUrl:', redirectUrl);
       
