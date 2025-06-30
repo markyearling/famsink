@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Check, AlertCircle } from 'lucide-react-native';
+import { Check, CircleAlert as AlertCircle } from 'lucide-react-native';
 import { Platform } from '../../types';
 
 interface ConnectedPlatformProps {

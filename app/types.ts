@@ -1,4 +1,4 @@
-import { LucideIcon } from 'lucide-react-native';
+import { Video as LucideIcon } from 'lucide-react-native';
 
 export interface Child {
   id: string;
