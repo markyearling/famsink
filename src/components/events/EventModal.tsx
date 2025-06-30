@@ -344,7 +344,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, onClose, mapsLoaded, map
                               streetViewControl: true,
                               mapTypeControl: true,
                               fullscreenControl: true,
-                              mapId: process.env.VITE_GOOGLE_MAPS_MAP_ID
+                              mapId: process.env.EXPO_PUBLIC_GOOGLE_MAPS_MAP_ID
                             }}
                             onClick={(e) => {
                               e.stopPropagation();
