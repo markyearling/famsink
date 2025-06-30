@@ -15,7 +15,7 @@
     "@expo/cli": "^0.24.15",
     "@expo/server": "^0.6.3",
     "@supabase/supabase-js": "^2.39.0",
-    "expo": "^53.0.0",
+    "expo": "^50.0.0",
     "expo-camera": "~14.0.6",
     "expo-constants": "~17.0.8",
     "expo-font": "~11.10.2",
