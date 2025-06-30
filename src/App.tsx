@@ -102,6 +102,14 @@ const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+useEffect(() => {
+  const listener = (event: PromiseRejectionEvent) => {
+    console.error('Unhandled promise rejection:', event.reason);
+  };
+  window.addEventListener('unhandledrejection', listener);
+  return () => window.removeEventListener('unhandledrejection', listener);
+}, []);
+  
   useEffect(() => {
     const initializeConnection = async () => {
       try {
@@ -112,13 +120,15 @@ const AppContent = () => {
         
         setInitialized(true);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to initialize application');
+          const message = err instanceof Error ? err.message : JSON.stringify(err);
+          setError(message || 'Failed to initialize application');
       }
     };
 
     initializeConnection().catch((err) => {
       console.error('Failed to initialize connection:', err);
-      setError(err instanceof Error ? err.message : 'Failed to initialize application');
+      const message = err instanceof Error ? err.message : JSON.stringify(err);
+      setError(message || 'Failed to initialize application');
     });
   }, []);
 
