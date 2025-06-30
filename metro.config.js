@@ -15,8 +15,8 @@ config.transformer.getTransformOptions = async () => ({
   },
 });
 
-// 🔥 This is what avoids the EMFILE crash:
-config.watch = {
+// 🔥 Fixed: Changed 'watch' to 'watcher' to resolve Metro validation warning
+config.watcher = {
   usePolling: true,
   interval: 1000, // Optional: milliseconds between checks
 };
