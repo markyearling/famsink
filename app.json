@@ -1,23 +1,37 @@
 {
   "expo": {
-    "name": "FamSink",
-    "slug": "famsink",
+    "name": "ExpoRouterApp",
+    "slug": "expo-router-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "extra": {
-      "eas": {
-        "projectId": "e94ab2aa-5019-4ff6-b7ba-99fc0bd04e0e"
-      }
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     },
-    "owner": "markyearling",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "bundleIdentifier": "com.yearling.famsink",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false,
-        "NSPhotoLibraryUsageDescription": "We use the photo library to let you upload and select photos."
-      }
+      "supportsTablet": true
     },
     "android": {
-      "package": "com.yearling.famsink"
-    }
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "server"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-camera"
+    ],
+    "scheme": "expo-router-app"
   }
 }
