@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Switch, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Bell, Moon, Globe, Lock, CreditCard, HelpCircle, Info, ChevronRight } from 'lucide-react-native';
+import { Bell, Moon, Globe, Lock, CreditCard, CircleHelp as HelpCircle, Info, ChevronRight } from 'lucide-react-native';
 import { useState } from 'react';
 
 export default function SettingsScreen() {

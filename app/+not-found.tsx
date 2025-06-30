@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
-import { AlertTriangle } from 'lucide-react-native';
+import { TriangleAlert as AlertTriangle } from 'lucide-react-native';
 
 export default function NotFoundScreen() {
   return (

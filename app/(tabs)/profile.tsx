@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Settings, Edit, ShoppingBag, Heart, Clock, LogOut } from 'lucide-react-native';
+import { Settings, CreditCard as Edit, ShoppingBag, Heart, Clock, LogOut } from 'lucide-react-native';
 
 export default function ProfileScreen() {
   const user = {
