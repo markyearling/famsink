@@ -102,6 +102,11 @@ const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  console.log('🔍 ENV at startup:', {
+  SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL,
+  SUPABASE_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
+});
+
   useEffect(() => {
     const listener = (event: PromiseRejectionEvent) => {
       console.error('Unhandled promise rejection:', event.reason);
@@ -118,7 +123,9 @@ const AppContent = () => {
         
         if (!connectionResult.success) {
           console.error('Connection test failed:', connectionResult.error, connectionResult.details);
-          throw new Error(connectionResult.error || 'Failed to connect to the backend services');
+          setError(connectionResult.error || 'Failed to connect to the backend services');
+          return;
+          //throw new Error(connectionResult.error || 'Failed to connect to the backend services');
         }
         
         setInitialized(true);
@@ -128,11 +135,12 @@ const AppContent = () => {
       }
     };
 
-    initializeConnection().catch((err) => {
-      console.error('Failed to initialize connection:', err);
-      const message = err instanceof Error ? err.message : JSON.stringify(err);
-      setError(message || 'Failed to initialize application');
-    });
+    initializeConnection(); 
+    //.catch((err) => {
+    //  console.error('Failed to initialize connection:', err);
+    //  const message = err instanceof Error ? err.message : JSON.stringify(err);
+    //  setError(message || 'Failed to initialize application');
+    //});
   }, []);
 
   // Check for password reset tokens in URL
