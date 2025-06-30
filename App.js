@@ -1,16 +1,19 @@
 // App.js
 import { registerRootComponent } from 'expo';
-import App from './src/App';
+import { createRoot } from 'react-dom/client';
+import { ExpoRoot } from 'expo-router';
 
+// Must be exported or Fast Refresh won't update the context
+export function App() {
+  const ctx = require.context('./app');
+  return <ExpoRoot context={ctx} />;
+}
+
+// This is the main entry point for Expo
 registerRootComponent(App);
 
-//import React from 'react';
-//import { Text, View } from 'react-native';
-
-//export default function App() {
-//  return (
-//    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//      <Text>Hello from App.js!</Text>
-//    </View>
-//  );
-//}
+// For web support
+if (typeof document !== 'undefined') {
+  const root = createRoot(document.getElementById('root'));
+  root.render(<App />);
+}
