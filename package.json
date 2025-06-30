@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo-google-fonts/poppins": "^0.2.3",
+    "@supabase/supabase-js": "^2.39.0",
     "expo": "~52.0.30",
     "expo-camera": "~14.0.6",
     "expo-constants": "~17.0.8",
