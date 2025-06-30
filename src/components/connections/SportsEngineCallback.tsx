@@ -18,7 +18,7 @@ const SportsEngineCallback: React.FC = () => {
 
       try {
         const sportsEngine = new SportsEngineService({
-          clientId: process.env.VITE_SPORTSENGINE_CLIENT_ID || '',
+          clientId: process.env.EXPO_PUBLIC_SPORTSENGINE_CLIENT_ID || '',
           redirectUri: `${window.location.origin}/connections/callback`
         });
 
