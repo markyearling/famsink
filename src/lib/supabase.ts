@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
 console.log('[supabase.ts] Initializing Supabase client with:', {
   url: supabaseUrl ? 'URL provided' : 'URL missing',
@@ -10,8 +10,8 @@ console.log('[supabase.ts] Initializing Supabase client with:', {
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('[supabase.ts] Missing Supabase configuration:', {
-    VITE_SUPABASE_URL: supabaseUrl ? 'present' : 'missing',
-    VITE_SUPABASE_ANON_KEY: supabaseAnonKey ? 'present' : 'missing'
+    EXPO_PUBLIC_SUPABASE_URL: supabaseUrl ? 'present' : 'missing',
+    EXPO_PUBLIC_SUPABASE_ANON_KEY: supabaseAnonKey ? 'present' : 'missing'
   });
   throw new Error('Missing Supabase environment variables');
 }

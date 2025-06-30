@@ -25,9 +25,9 @@ const Dashboard: React.FC = () => {
 
   // Centralized Google Maps loading
   const { isLoaded: mapsLoaded, loadError: mapsLoadError } = useLoadScript({
-    googleMapsApiKey: process.env.VITE_GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || '',
     libraries,
-    mapIds: [process.env.VITE_GOOGLE_MAPS_MAP_ID || '']
+    mapIds: [process.env.EXPO_PUBLIC_GOOGLE_MAPS_MAP_ID || '']
   });
 
   // Memoize profile IDs to prevent unnecessary re-renders
