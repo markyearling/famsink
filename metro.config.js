@@ -15,10 +15,4 @@ config.transformer.getTransformOptions = async () => ({
   },
 });
 
-// 🔥 Fixed: Changed 'watch' to 'watcher' to resolve Metro validation warning
-config.watcher = {
-  usePolling: true,
-  interval: 1000, // Optional: milliseconds between checks
-};
-
 module.exports = config;
