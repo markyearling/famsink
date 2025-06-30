@@ -48,9 +48,9 @@ const ChildProfile: React.FC = () => {
 
   // Centralized Google Maps loading
   const { isLoaded: mapsLoaded, loadError: mapsLoadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: process.env.VITE_GOOGLE_MAPS_API_KEY || '',
     libraries,
-    mapIds: [import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || '']
+    mapIds: [process.env.VITE_GOOGLE_MAPS_MAP_ID || '']
   });
 
   const colorOptions = [

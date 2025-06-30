@@ -18,7 +18,7 @@ const TeamSnapCallback: React.FC = () => {
 
       try {
         const teamSnap = new TeamSnapService({
-          clientId: import.meta.env.VITE_TEAMSNAP_CLIENT_ID,
+          clientId: process.env.VITE_TEAMSNAP_CLIENT_ID || '',
           redirectUri: `${window.location.origin}/connections/teamsnap/callback`
         });
 

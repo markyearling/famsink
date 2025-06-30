@@ -1,4 +1,4 @@
-package com.markyearling.famsink
+package com.yearling.famsink
 
 import android.app.Application
 import android.content.res.Configuration

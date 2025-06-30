@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.markyearling.famsink'
+    namespace 'com.yearling.famsink'
     defaultConfig {
-        applicationId 'com.markyearling.famsink'
+        applicationId 'com.yearling.famsink'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

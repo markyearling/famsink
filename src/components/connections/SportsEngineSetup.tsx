@@ -15,7 +15,7 @@ const SportsEngineSetup: React.FC = () => {
     const fetchData = async () => {
       try {
         const sportsEngine = new SportsEngineService({
-          clientId: import.meta.env.VITE_SPORTSENGINE_CLIENT_ID,
+          clientId: process.env.VITE_SPORTSENGINE_CLIENT_ID || '',
           redirectUri: `${window.location.origin}/connections/callback`
         });
 
