@@ -174,7 +174,7 @@ const SportsEngineConnection: React.FC = () => {
 
       // Immediately sync the calendar to get events and team name
       try {
-        const response = await fetch(`${process.env.VITE_SUPABASE_URL}/functions/v1/sync-sportsengine-calendar`, {
+        const response = await fetch(`${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/sync-sportsengine-calendar`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -280,7 +280,7 @@ const SportsEngineConnection: React.FC = () => {
       // Sync events for each mapped profile
       let totalEvents = 0;
       for (const profile of mappedProfiles) {
-        const response = await fetch(`${process.env.VITE_SUPABASE_URL}/functions/v1/sync-sportsengine-calendar`, {
+        const response = await fetch(`${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/sync-sportsengine-calendar`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
