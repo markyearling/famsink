@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import { Link, router } from 'expo-router';
-import { Mail, Lock, User, CircleAlert as AlertCircle, Eye, EyeOff } from 'lucide-react-native';
+import { Mail, Lock, User, AlertCircle, Eye, EyeOff } from 'lucide-react-native';
 import { supabase } from '../../src/lib/supabase';
 
 export default function SignUp() {
@@ -67,7 +67,7 @@ export default function SignUp() {
           data: {
             full_name: fullName,
           },
-          emailRedirectTo: `${process.env.EXPO_PUBLIC_WEBSITE_URL || window.location.origin}/auth/auth-callback`,
+          emailRedirectTo: `${process.env.EXPO_PUBLIC_WEBSITE_URL || (Platform.OS === 'web' ? window.location.origin : '')}/auth/auth-callback`,
         },
       });
       

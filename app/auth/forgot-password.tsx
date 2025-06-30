@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { Link, router } from 'expo-router';
-import { ArrowLeft, Mail, CircleCheck as CheckCircle, CircleAlert as AlertCircle } from 'lucide-react-native';
+import { ArrowLeft, Mail, CheckCircle, AlertCircle } from 'lucide-react-native';
 import { supabase } from '../../src/lib/supabase';
 
 export default function ForgotPassword() {
@@ -16,7 +16,7 @@ export default function ForgotPassword() {
 
     try {
       // Use the auth/callback endpoint for the redirect URL
-      const redirectUrl = `${process.env.EXPO_PUBLIC_WEBSITE_URL || window.location.origin}/auth/auth-callback`;
+      const redirectUrl = `${process.env.EXPO_PUBLIC_WEBSITE_URL || (Platform.OS === 'web' ? window.location.origin : '')}/auth/auth-callback`;
       
       console.log('ForgotPassword: Sending reset password email with redirectUrl:', redirectUrl);
       

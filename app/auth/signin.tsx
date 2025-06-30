@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { Link, router, useLocalSearchParams } from 'expo-router';
-import { Mail, Lock, CircleAlert as AlertCircle, CircleCheck as CheckCircle } from 'lucide-react-native';
+import { Mail, Lock, AlertCircle, CheckCircle } from 'lucide-react-native';
 import { supabase } from '../../src/lib/supabase';
 
 export default function SignIn() {

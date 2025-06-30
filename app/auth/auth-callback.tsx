@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Loader as Loader2, CircleAlert as AlertCircle } from 'lucide-react-native';
+import { Loader2, AlertCircle } from 'lucide-react-native';
 import { supabase } from '../../src/lib/supabase';
 
 export default function AuthCallback() {
@@ -48,8 +48,8 @@ export default function AuthCallback() {
           console.log('[AuthCallback] Password reset flow detected with code');
           
           try {
-            // Explicitly clear any stored tokens
-            if (typeof localStorage !== 'undefined') {
+            // Clear any stored tokens if on web platform
+            if (Platform.OS === 'web' && typeof localStorage !== 'undefined') {
               localStorage.removeItem('supabase.auth.token');
               localStorage.removeItem('sb-refresh-token');
               localStorage.removeItem('sb-access-token');

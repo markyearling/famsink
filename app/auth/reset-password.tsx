@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Lock, Eye, EyeOff, CircleCheck as CheckCircle, CircleAlert as AlertCircle } from 'lucide-react-native';
+import { Lock, Eye, EyeOff, CheckCircle, AlertCircle } from 'lucide-react-native';
 import { supabase } from '../../src/lib/supabase';
 
 export default function ResetPassword() {
@@ -36,8 +36,8 @@ export default function ResetPassword() {
         if (accessToken && refreshToken) {
           console.log('ResetPassword: Found tokens in URL, setting up session');
           
-          // Explicitly clear any stored tokens from localStorage
-          if (typeof localStorage !== 'undefined') {
+          // Clear any stored tokens if on web platform
+          if (Platform.OS === 'web' && typeof localStorage !== 'undefined') {
             localStorage.removeItem('supabase.auth.token');
             localStorage.removeItem('sb-refresh-token');
             localStorage.removeItem('sb-access-token');
@@ -69,8 +69,8 @@ export default function ResetPassword() {
         else if (code) {
           console.log('ResetPassword: Found code in URL, exchanging for session');
           
-          // Explicitly clear any stored tokens from localStorage
-          if (typeof localStorage !== 'undefined') {
+          // Clear any stored tokens if on web platform
+          if (Platform.OS === 'web' && typeof localStorage !== 'undefined') {
             localStorage.removeItem('supabase.auth.token');
             localStorage.removeItem('sb-refresh-token');
             localStorage.removeItem('sb-access-token');
@@ -80,17 +80,17 @@ export default function ResetPassword() {
           await supabase.auth.signOut();
           
           // Exchange the code for a session
-          const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
           
           console.log('ResetPassword: exchangeCodeForSession result:', { 
-            success: !error, 
+            success: !exchangeError, 
             hasData: !!data,
             hasSession: !!data?.session,
-            error: error ? error.message : null
+            error: exchangeError ? exchangeError.message : null
           });
           
-          if (error) {
-            console.error('ResetPassword: Error exchanging code for session:', error);
+          if (exchangeError) {
+            console.error('ResetPassword: Error exchanging code for session:', exchangeError);
             setError('Invalid or expired reset link. Please request a new password reset.');
           } else if (!data.session) {
             console.error('ResetPassword: No session returned from code exchange');
@@ -182,10 +182,11 @@ export default function ResetPassword() {
       
       // Redirect to login after 3 seconds
       setTimeout(() => {
-        router.replace('/auth/signin', { 
+        router.replace({
+          pathname: '/auth/signin',
           params: { 
             message: 'Password updated successfully. Please sign in with your new password.' 
-          } 
+          }
         });
       }, 3000);
 
