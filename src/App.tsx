@@ -102,26 +102,29 @@ const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-useEffect(() => {
-  const listener = (event: PromiseRejectionEvent) => {
-    console.error('Unhandled promise rejection:', event.reason);
-  };
-  window.addEventListener('unhandledrejection', listener);
-  return () => window.removeEventListener('unhandledrejection', listener);
-}, []);
+  useEffect(() => {
+    const listener = (event: PromiseRejectionEvent) => {
+      console.error('Unhandled promise rejection:', event.reason);
+    };
+    window.addEventListener('unhandledrejection', listener);
+    return () => window.removeEventListener('unhandledrejection', listener);
+  }, []);
   
   useEffect(() => {
     const initializeConnection = async () => {
       try {
-        const isConnected = await testSupabaseConnection();
-        if (!isConnected) {
-          throw new Error('Failed to connect to the backend services');
+        const connectionResult = await testSupabaseConnection();
+        console.log('Connection test result:', connectionResult);
+        
+        if (!connectionResult.success) {
+          console.error('Connection test failed:', connectionResult.error, connectionResult.details);
+          throw new Error(connectionResult.error || 'Failed to connect to the backend services');
         }
         
         setInitialized(true);
       } catch (err) {
-          const message = err instanceof Error ? err.message : JSON.stringify(err);
-          setError(message || 'Failed to initialize application');
+        const message = err instanceof Error ? err.message : JSON.stringify(err);
+        setError(message || 'Failed to initialize application');
       }
     };
 

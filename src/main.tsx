@@ -10,7 +10,16 @@ process.on('unhandledRejection', (reason, promise) => {
     reason,
     promise,
     stack: reason instanceof Error ? reason.stack : 'No stack trace available',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    reasonType: typeof reason,
+    reasonIsError: reason instanceof Error,
+    reasonStringified: (() => {
+      try {
+        return JSON.stringify(reason);
+      } catch (e) {
+        return `[Cannot stringify: ${e}]`;
+      }
+    })()
   });
 });
 
@@ -28,7 +37,16 @@ if (typeof window !== 'undefined') {
     console.error('🚨 Unhandled Rejection (window):', {
       reason: event.reason,
       stack: event.reason instanceof Error ? event.reason.stack : 'No stack trace available',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      reasonType: typeof event.reason,
+      reasonIsError: event.reason instanceof Error,
+      reasonStringified: (() => {
+        try {
+          return JSON.stringify(event.reason);
+        } catch (e) {
+          return `[Cannot stringify: ${e}]`;
+        }
+      })()
     });
   });
 

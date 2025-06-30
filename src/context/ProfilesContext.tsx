@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { supabase, testConnection } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
+import { testSupabaseConnection } from '../lib/testConnection';
 import { Child } from '../types';
 
 interface ProfilesContextType {
@@ -50,9 +51,12 @@ export const ProfilesProvider: React.FC<ProfilesProviderProps> = ({ children }) 
 
     const initializeConnection = async () => {
       try {
-        const isConnected = await testConnection();
-        if (!isConnected) {
-          throw new Error('Failed to establish connection with Supabase');
+        const connectionResult = await testSupabaseConnection();
+        console.log('Connection test result:', connectionResult);
+        
+        if (!connectionResult.success) {
+          console.error('Connection test failed:', connectionResult.error, connectionResult.details);
+          throw new Error(connectionResult.error || 'Failed to establish connection with Supabase');
         }
         
         if (mounted) {
