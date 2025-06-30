@@ -47,6 +47,5 @@
     <div id="root">
       <div class="initial-loader"></div>
     </div>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
