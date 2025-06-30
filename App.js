@@ -1,11 +1,16 @@
 // App.js
-import React from 'react';
-import { Text, View } from 'react-native';
+import { registerRootComponent } from 'expo';
+import App from './src/App';
 
-export default function App() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Hello from App.js!</Text>
-    </View>
-  );
-}
+registerRootComponent(App);
+
+//import React from 'react';
+//import { Text, View } from 'react-native';
+
+//export default function App() {
+//  return (
+//    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//      <Text>Hello from App.js!</Text>
+//    </View>
+//  );
+//}

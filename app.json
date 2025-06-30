@@ -2,6 +2,7 @@
   "expo": {
     "name": "FamSink",
     "slug": "famsink",
+    "icon": "./assets/icon.png",
     "extra": {
       "eas": {
         "projectId": "e94ab2aa-5019-4ff6-b7ba-99fc0bd04e0e"
