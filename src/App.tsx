@@ -25,7 +25,8 @@ import { ThemeProvider } from './context/ThemeContext';
 import { ProfilesProvider } from './context/ProfilesContext';
 import { useAuth } from './hooks/useAuth';
 import { useCapacitor } from './hooks/useCapacitor';
-import { supabase, testConnection } from './lib/supabase';
+import { supabase } from './lib/supabase';
+import { testSupabaseConnection } from './lib/testConnection';
 
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -104,7 +105,7 @@ const AppContent = () => {
   useEffect(() => {
     const initializeConnection = async () => {
       try {
-        const isConnected = await testConnection();
+        const isConnected = await testSupabaseConnection();
         if (!isConnected) {
           throw new Error('Failed to connect to the backend services');
         }
